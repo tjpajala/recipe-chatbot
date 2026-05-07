@@ -147,10 +147,308 @@
         background-color: #adb5bd; /* Gray when disabled */
         cursor: not-allowed;
       }
+
+      /* Tab Navigation */
+      #tab-nav {
+        display: flex;
+        gap: 0;
+        max-width: 600px;
+        margin: 0 auto 16px auto;
+        padding: 0;
+        background: #e9ecef;
+        border-radius: 8px 8px 0 0;
+        overflow: hidden;
+      }
+
+      .tab-btn {
+        flex: 1;
+        padding: 14px 24px;
+        background: #e9ecef;
+        border: none;
+        border-bottom: 3px solid transparent;
+        cursor: pointer;
+        font-family: 'Inter', sans-serif;
+        font-size: 1rem;
+        font-weight: 500;
+        color: #6c757d;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .tab-btn:hover {
+        background: #dee2e6;
+        color: #343a40;
+      }
+
+      .tab-btn.active {
+        background: #ffffff;
+        border-bottom-color: #28a745;
+        color: #343a40;
+      }
+
+      /* Traces View Container */
+      #traces-view {
+        display: none;
+        width: 100%;
+        max-width: 100%;
+        height: calc(100vh - 180px);
+        margin: 0 auto;
+        background: #ffffff;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        border-radius: 0 0 12px 12px;
+        overflow: hidden;
+      }
+
+      #traces-view.active {
+        display: flex;
+        gap: 0;
+      }
+
+      /* Traces List Pane (Left) */
+      #traces-list-pane {
+        width: 40%;
+        min-width: 320px;
+        display: flex;
+        flex-direction: column;
+        border-right: 1px solid #dee2e6;
+        background: #f8f9fa;
+      }
+
+      #traces-list-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid #dee2e6;
+        background: #ffffff;
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: #343a40;
+      }
+
+      #traces-list-container {
+        flex: 1;
+        overflow-y: auto;
+        background: #ffffff;
+      }
+
+      .trace-item {
+        padding: 14px 20px;
+        border-bottom: 1px solid #dee2e6;
+        cursor: pointer;
+        background: #ffffff;
+        transition: background 0.15s ease-in-out;
+        border-left: 3px solid transparent;
+      }
+
+      .trace-item:hover {
+        background: #f8f9fa;
+      }
+
+      .trace-item.selected {
+        background: #e0f0ff;
+        border-left-color: #28a745;
+      }
+
+      .trace-timestamp {
+        font-size: 0.8rem;
+        color: #6c757d;
+        margin-bottom: 6px;
+        font-weight: 500;
+      }
+
+      .trace-preview {
+        font-size: 0.9rem;
+        color: #343a40;
+        margin-bottom: 6px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        line-height: 1.4;
+      }
+
+      .trace-meta {
+        font-size: 0.75rem;
+        color: #6c757d;
+        font-weight: 500;
+      }
+
+      /* Pagination Controls */
+      #trace-pagination {
+        padding: 12px 20px;
+        border-top: 1px solid #dee2e6;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #ffffff;
+        gap: 12px;
+      }
+
+      .pagination-btn {
+        padding: 8px 16px;
+        background: #28a745;
+        color: #ffffff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: background-color 0.2s ease-in-out;
+      }
+
+      .pagination-btn:hover:not(:disabled) {
+        background: #218838;
+      }
+
+      .pagination-btn:disabled {
+        background: #adb5bd;
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+
+      .pagination-info {
+        font-size: 0.875rem;
+        color: #6c757d;
+        font-weight: 500;
+        flex: 1;
+        text-align: center;
+      }
+
+      /* Traces Detail Pane (Right) */
+      #traces-detail-pane {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        padding: 20px;
+        background: #f8f9fa;
+      }
+
+      .trace-detail-header {
+        padding: 16px 20px;
+        background: #ffffff;
+        border-radius: 8px;
+        margin-bottom: 16px;
+        border-left: 3px solid #28a745;
+      }
+
+      .trace-detail-title {
+        font-weight: 600;
+        font-size: 1rem;
+        color: #343a40;
+        margin-bottom: 4px;
+      }
+
+      .trace-detail-timestamp {
+        font-size: 0.85rem;
+        color: #6c757d;
+      }
+
+      /* System Message (Collapsible) */
+      .system-message-container {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        margin-bottom: 12px;
+        overflow: hidden;
+      }
+
+      .system-message-header {
+        padding: 10px 15px;
+        background: #e9ecef;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #6c757d;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        user-select: none;
+      }
+
+      .system-message-header:hover {
+        background: #dee2e6;
+      }
+
+      .system-message-toggle {
+        font-size: 1rem;
+        transition: transform 0.2s ease-in-out;
+      }
+
+      .system-message-toggle.expanded {
+        transform: rotate(90deg);
+      }
+
+      .system-message-content {
+        padding: 15px;
+        font-size: 0.875rem;
+        font-style: italic;
+        color: #495057;
+        line-height: 1.6;
+        background: #ffffff;
+        border-top: 1px solid #dee2e6;
+        display: none;
+        white-space: pre-wrap;
+      }
+
+      .system-message-content.expanded {
+        display: block;
+      }
+
+      /* Empty State */
+      .empty-state {
+        padding: 60px 20px;
+        text-align: center;
+        color: #6c757d;
+        font-style: italic;
+        font-size: 1rem;
+      }
+
+      /* Loading State */
+      .loading-state {
+        padding: 40px 20px;
+        text-align: center;
+        color: #6c757d;
+        font-size: 0.95rem;
+      }
+
+      .loading-spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid #dee2e6;
+        border-top-color: #28a745;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        margin-right: 8px;
+        vertical-align: middle;
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        #traces-view {
+          flex-direction: column;
+        }
+        #traces-list-pane {
+          width: 100%;
+          min-width: 0;
+          height: 40vh;
+        }
+      }
     </style>
   </head>
   <body>
-    <h2 style="font-family: 'Inter', sans-serif; font-weight: 600; color: #343a40; margin-top: 24px; margin-bottom: 16px; text-align: center;">Recipe Chatbot</h2>
+    <h2 style="font-family: 'Inter', sans-serif; font-weight: 600; color: #343a40; margin-top: 24px; margin-bottom: 0; text-align: center;">Recipe Chatbot</h2>
+
+    <!-- Tab Navigation -->
+    <div id="tab-nav">
+      <button class="tab-btn active" data-tab="chat">Chat</button>
+      <button class="tab-btn" data-tab="traces">Traces</button>
+    </div>
+
+    <!-- Chat View -->
     <div id="app-container"> <!-- New wrapper -->
         <div id="chat-container">
             <!-- Messages are rendered here by renderChat -->
@@ -167,6 +465,24 @@
             <button id="send-btn" type="submit">Send</button>
         </form>
     </div> <!-- End of app-container -->
+
+    <!-- Traces View -->
+    <div id="traces-view">
+      <div id="traces-list-pane">
+        <div id="traces-list-header">Conversation Traces</div>
+        <div id="traces-list-container">
+          <div class="empty-state">Loading traces...</div>
+        </div>
+        <div id="trace-pagination">
+          <button class="pagination-btn" id="prev-page-btn">Previous</button>
+          <span class="pagination-info" id="pagination-info">Page 1 of 1</span>
+          <button class="pagination-btn" id="next-page-btn">Next</button>
+        </div>
+      </div>
+      <div id="traces-detail-pane">
+        <div class="empty-state">Select a trace to view details</div>
+      </div>
+    </div>
 
     <script>
       const form = document.getElementById("input-form");
@@ -259,6 +575,330 @@
       form.addEventListener("submit", sendMessage);
       // Initial render (in case there's a system message or pre-filled history later)
       renderChat();
+
+      // ========================================================================
+      // TRACES TAB COMPONENTS
+      // ========================================================================
+
+      // ------------------------------------------------------------------------
+      // MessageRenderer - Shared utility for rendering messages
+      // ------------------------------------------------------------------------
+      const MessageRenderer = {
+        renderMessage(message, isCollapsed = false) {
+          const bubble = document.createElement("div");
+
+          if (message.role === "system") {
+            // System message - collapsible
+            const container = document.createElement("div");
+            container.className = "system-message-container";
+
+            const header = document.createElement("div");
+            header.className = "system-message-header";
+            header.innerHTML = `
+              <span>System Message (click to expand)</span>
+              <span class="system-message-toggle">▶</span>
+            `;
+            header.onclick = () => this.toggleSystemMessage(container);
+
+            const content = document.createElement("div");
+            content.className = "system-message-content";
+            content.textContent = message.content;
+
+            container.appendChild(header);
+            container.appendChild(content);
+            return container;
+          } else {
+            // Regular message bubble
+            bubble.classList.add("message", message.role);
+
+            if (message.role === "assistant") {
+              bubble.innerHTML = marked.parse(message.content || "");
+            } else {
+              bubble.textContent = message.content;
+            }
+            return bubble;
+          }
+        },
+
+        toggleSystemMessage(container) {
+          const content = container.querySelector(".system-message-content");
+          const toggle = container.querySelector(".system-message-toggle");
+          content.classList.toggle("expanded");
+          toggle.classList.toggle("expanded");
+        }
+      };
+
+      // ------------------------------------------------------------------------
+      // TabManager - Handles tab switching and persistence
+      // ------------------------------------------------------------------------
+      const TabManager = {
+        activeTab: 'chat',
+
+        init() {
+          // Set up tab click handlers
+          document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+              this.switchTab(btn.dataset.tab);
+            });
+          });
+
+          // Handle hash changes
+          window.addEventListener('hashchange', () => {
+            this.syncFromHash();
+          });
+
+          // Initialize from hash or localStorage
+          this.loadInitialTab();
+        },
+
+        loadInitialTab() {
+          const hash = window.location.hash.slice(1);
+          const saved = localStorage.getItem('activeTab');
+          const initial = hash || saved || 'chat';
+          this.switchTab(initial);
+        },
+
+        switchTab(tabName) {
+          this.activeTab = tabName;
+
+          // Update URL hash
+          window.location.hash = tabName;
+
+          // Save to localStorage
+          localStorage.setItem('activeTab', tabName);
+
+          // Update UI
+          document.querySelectorAll('.tab-btn').forEach(btn => {
+            if (btn.dataset.tab === tabName) {
+              btn.classList.add('active');
+            } else {
+              btn.classList.remove('active');
+            }
+          });
+
+          // Show/hide views
+          if (tabName === 'chat') {
+            document.getElementById('app-container').style.display = 'flex';
+            document.getElementById('traces-view').classList.remove('active');
+          } else if (tabName === 'traces') {
+            document.getElementById('app-container').style.display = 'none';
+            document.getElementById('traces-view').classList.add('active');
+
+            // Always reload traces to pick up new conversations
+            TracesListView.loadTraces(1);
+          }
+        },
+
+        syncFromHash() {
+          const hash = window.location.hash.slice(1);
+          if (hash && hash !== this.activeTab) {
+            this.switchTab(hash);
+          }
+        }
+      };
+
+      // ------------------------------------------------------------------------
+      // TracesListView - Left pane with paginated trace list
+      // ------------------------------------------------------------------------
+      const TracesListView = {
+        traces: [],
+        currentPage: 1,
+        totalPages: 1,
+        total: 0,
+        selectedTraceId: null,
+
+        async loadTraces(page) {
+          this.currentPage = page;
+          const container = document.getElementById('traces-list-container');
+
+          try {
+            // Show loading state
+            container.innerHTML = '<div class="loading-state"><span class="loading-spinner"></span>Loading traces...</div>';
+
+            const res = await fetch(`/api/traces?page=${page}&per_page=20`);
+            if (!res.ok) {
+              throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+            }
+
+            const data = await res.json();
+            this.traces = data.traces;
+            this.totalPages = data.total_pages;
+            this.total = data.total;
+
+            this.renderList();
+            this.updatePagination();
+
+            // Auto-select first trace if none selected
+            if (this.traces.length > 0 && !this.selectedTraceId) {
+              TracesDetailView.loadTrace(this.traces[0].id);
+            }
+          } catch (error) {
+            container.innerHTML = `<div class="empty-state">Failed to load traces: ${error.message}</div>`;
+            console.error('Error loading traces:', error);
+          }
+        },
+
+        renderList() {
+          const container = document.getElementById('traces-list-container');
+
+          if (this.traces.length === 0) {
+            container.innerHTML = '<div class="empty-state">No traces found</div>';
+            return;
+          }
+
+          container.innerHTML = '';
+          this.traces.forEach(trace => {
+            const item = document.createElement('div');
+            item.className = 'trace-item';
+            if (trace.id === this.selectedTraceId) {
+              item.classList.add('selected');
+            }
+
+            // Format timestamp
+            const date = new Date(trace.timestamp);
+            const formattedDate = date.toLocaleString('en-US', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+            });
+
+            item.innerHTML = `
+              <div class="trace-timestamp">${formattedDate}</div>
+              <div class="trace-preview">${this.escapeHtml(trace.preview)}</div>
+              <div class="trace-meta">${trace.message_count} message${trace.message_count !== 1 ? 's' : ''}</div>
+            `;
+
+            item.addEventListener('click', () => {
+              this.selectTrace(trace.id);
+            });
+
+            container.appendChild(item);
+          });
+        },
+
+        selectTrace(traceId) {
+          this.selectedTraceId = traceId;
+
+          // Update selected state in list
+          document.querySelectorAll('.trace-item').forEach(item => {
+            item.classList.remove('selected');
+          });
+          event.currentTarget.classList.add('selected');
+
+          // Load trace detail
+          TracesDetailView.loadTrace(traceId);
+        },
+
+        updatePagination() {
+          const prevBtn = document.getElementById('prev-page-btn');
+          const nextBtn = document.getElementById('next-page-btn');
+          const info = document.getElementById('pagination-info');
+
+          prevBtn.disabled = this.currentPage <= 1;
+          nextBtn.disabled = this.currentPage >= this.totalPages;
+          info.textContent = `Page ${this.currentPage} of ${this.totalPages} (${this.total} total)`;
+
+          // Set up click handlers (remove old ones first)
+          const newPrevBtn = prevBtn.cloneNode(true);
+          const newNextBtn = nextBtn.cloneNode(true);
+          prevBtn.parentNode.replaceChild(newPrevBtn, prevBtn);
+          nextBtn.parentNode.replaceChild(newNextBtn, nextBtn);
+
+          newPrevBtn.addEventListener('click', () => {
+            if (this.currentPage > 1) {
+              this.loadTraces(this.currentPage - 1);
+            }
+          });
+
+          newNextBtn.addEventListener('click', () => {
+            if (this.currentPage < this.totalPages) {
+              this.loadTraces(this.currentPage + 1);
+            }
+          });
+        },
+
+        escapeHtml(text) {
+          const div = document.createElement('div');
+          div.textContent = text;
+          return div.innerHTML;
+        }
+      };
+
+      // ------------------------------------------------------------------------
+      // TracesDetailView - Right pane with full trace display
+      // ------------------------------------------------------------------------
+      const TracesDetailView = {
+        currentTrace: null,
+
+        async loadTrace(traceId) {
+          const container = document.getElementById('traces-detail-pane');
+
+          try {
+            // Show loading state
+            container.innerHTML = '<div class="loading-state"><span class="loading-spinner"></span>Loading trace...</div>';
+
+            const res = await fetch(`/api/traces/${traceId}`);
+            if (!res.ok) {
+              throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+            }
+
+            const trace = await res.json();
+            this.currentTrace = trace;
+            this.renderDetail();
+          } catch (error) {
+            container.innerHTML = `<div class="empty-state">Failed to load trace: ${error.message}</div>`;
+            console.error('Error loading trace detail:', error);
+          }
+        },
+
+        renderDetail() {
+          const container = document.getElementById('traces-detail-pane');
+
+          if (!this.currentTrace) {
+            container.innerHTML = '<div class="empty-state">Select a trace to view details</div>';
+            return;
+          }
+
+          const messages = this.currentTrace.response?.messages || [];
+
+          if (messages.length === 0) {
+            container.innerHTML = '<div class="empty-state">No messages in this trace</div>';
+            return;
+          }
+
+          // Format timestamp for header
+          const date = new Date(this.currentTrace.timestamp);
+          const formattedDate = date.toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+          });
+
+          // Create header
+          container.innerHTML = `
+            <div class="trace-detail-header">
+              <div class="trace-detail-title">Trace: ${this.currentTrace.id}</div>
+              <div class="trace-detail-timestamp">${formattedDate}</div>
+            </div>
+          `;
+
+          // Render messages
+          messages.forEach(message => {
+            const messageElement = MessageRenderer.renderMessage(message);
+            container.appendChild(messageElement);
+          });
+        }
+      };
+
+      // ------------------------------------------------------------------------
+      // Initialize Traces Tab
+      // ------------------------------------------------------------------------
+      TabManager.init();
     </script>
   </body>
 </html> 
