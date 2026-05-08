@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "query": "Suggest a quick vegan breakfast recipe"
+  },
+  {
+    "id": 2,
+    "query": "I have chicken and rice. What can I cook?"
+  },
+  {
+    "id": 3,
+    "query": "Give me a dessert recipe with chocolate"
+  },
+  {
+    "id": 4,
+    "query": "What's a healthy gluten-free lunch option?"
+  },
+  {
+    "id": 5,
+    "query": "I need a keto dinner recipe with salmon"
+  },
+  {
+    "id": 6,
+    "query": "Quick pasta recipe for 4 people"
+  },
+  {
+    "id": 7,
+    "query": "Vegetarian soup with lentils"
+  },
+  {
+    "id": 8,
+    "query": "Easy breakfast recipe with eggs"
+  },
+  {
+    "id": 9,
+    "query": "Low-carb snack ideas"
+  },
+  {
+    "id": 10,
+    "query": "Traditional Italian pizza recipe"
+  }
+]
