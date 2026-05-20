@@ -21,6 +21,7 @@ from backend.utils import (
     save_evals_cache,
     run_judge_evaluation,
     calculate_judgy_metrics,
+    validate_judge_on_dataset,
     parse_trace_timestamp,
     SYSTEM_PROMPT,
     TRACES_DIR,
@@ -125,6 +126,42 @@ class EvalsRunResponse(BaseModel):
     results: List[EvalResult] = Field(..., description="Individual evaluation results.")
     metrics: Dict[str, Any] = Field(..., description="Aggregated metrics from judgy.")
     system_prompt_hash: str = Field(..., description="Hash of system prompt used.")
+
+
+class LabelTraceRequest(BaseModel):
+    """Schema for labeling a trace."""
+
+    label: str = Field(..., description="PASS or FAIL.")
+    reasoning: str = Field("", description="Reasoning for the label (optional).")
+    confidence: str = Field("MEDIUM", description="LOW, MEDIUM, or HIGH.")
+
+
+class UnlabeledTracesResponse(BaseModel):
+    """Schema for unlabeled traces response."""
+
+    traces: List[Dict] = Field(..., description="List of unlabeled trace data.")
+    total: int = Field(..., description="Total number of unlabeled traces.")
+    labeled_count: int = Field(..., description="Number of labeled traces.")
+
+
+class SplitsStatsResponse(BaseModel):
+    """Schema for splits statistics response."""
+
+    exists: bool = Field(..., description="Whether splits exist.")
+    train_count: int = Field(0, description="Number of traces in train set.")
+    dev_count: int = Field(0, description="Number of traces in dev set.")
+    test_count: int = Field(0, description="Number of traces in test set.")
+    total_count: int = Field(0, description="Total number of traces in all splits.")
+    labeled_count: int = Field(0, description="Number of labeled traces available.")
+
+
+class ValidateJudgeRequest(BaseModel):
+    """Schema for judge validation request."""
+
+    judge_prompt: str = Field(..., description="Judge prompt to validate.")
+    dataset: str = Field(..., description="Dataset to validate on (dev or test).")
+    tpr: Optional[float] = Field(None, ge=0.0, le=1.0, description="True Positive Rate from dev set (for test set evaluation).")
+    tnr: Optional[float] = Field(None, ge=0.0, le=1.0, description="True Negative Rate from dev set (for test set evaluation).")
 
 
 # -----------------------------------------------------------------------------
@@ -239,6 +276,70 @@ async def list_traces(page: int = 1, per_page: int = 20) -> TraceListResponse:
     )
 
 
+@app.get("/api/traces/unlabeled", response_model=UnlabeledTracesResponse)
+async def get_unlabeled_traces() -> UnlabeledTracesResponse:
+    """Get all unlabeled traces for labeling interface.
+
+    Returns traces that don't have a 'labeled' field set to True.
+    """
+    if not TRACES_DIR.exists():
+        return UnlabeledTracesResponse(traces=[], total=0, labeled_count=0)
+
+    all_trace_files = list(TRACES_DIR.glob("trace_*.json"))
+    unlabeled_traces = []
+    labeled_count = 0
+
+    for trace_file in sorted(all_trace_files, key=lambda p: p.stat().st_mtime, reverse=True):
+        try:
+            with open(trace_file, "r") as f:
+                trace_data = json.load(f)
+
+            # Check if labeled
+            if trace_data.get("labeled"):
+                labeled_count += 1
+                continue
+
+            # Extract timestamp from filename
+            timestamp_str = trace_file.stem.replace("trace_", "")
+            dt = parse_trace_timestamp(timestamp_str)
+
+            # Extract first user message for preview
+            request_messages = trace_data.get("request", {}).get("messages", [])
+            query = ""
+            for msg in request_messages:
+                if msg.get("role") == "user":
+                    query = msg.get("content", "")
+                    break
+
+            # Extract assistant response
+            response_messages = trace_data.get("response", {}).get("messages", [])
+            response = ""
+            for msg in reversed(response_messages):
+                if msg.get("role") == "assistant":
+                    response = msg.get("content", "")
+                    break
+
+            unlabeled_traces.append({
+                "id": trace_file.stem,
+                "timestamp": dt.isoformat(),
+                "query": query,
+                "response": response,
+                "label": trace_data.get("label", ""),
+                "reasoning": trace_data.get("reasoning", ""),
+                "confidence": trace_data.get("confidence", "")
+            })
+
+        except Exception:
+            # Skip malformed traces
+            continue
+
+    return UnlabeledTracesResponse(
+        traces=unlabeled_traces,
+        total=len(unlabeled_traces),
+        labeled_count=labeled_count
+    )
+
+
 @app.get("/api/traces/{trace_id}")
 async def get_trace(trace_id: str) -> Dict:
     """Retrieve a single trace by ID.
@@ -282,6 +383,221 @@ async def get_trace(trace_id: str) -> Dict:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to read trace: {str(exc)}"
+        ) from exc
+
+
+@app.post("/api/traces/{trace_id}/label")
+async def label_trace(trace_id: str, payload: LabelTraceRequest) -> Dict:
+    """Save a label for a trace.
+
+    Adds label, reasoning, confidence, and labeled=True to the trace file.
+    """
+    # Security: Validate trace_id to prevent path traversal
+    if not re.match(r"^trace_[\d-]+_\d+(_\d+)?$", trace_id):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid trace ID format"
+        )
+
+    trace_path = TRACES_DIR / f"{trace_id}.json"
+
+    if not trace_path.exists() or not trace_path.is_file():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Trace not found"
+        )
+
+    # Validate label value
+    if payload.label not in ["PASS", "FAIL"]:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Label must be PASS or FAIL"
+        )
+
+    # Validate confidence value if provided
+    if payload.confidence and payload.confidence not in ["LOW", "MEDIUM", "HIGH"]:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Confidence must be LOW, MEDIUM, or HIGH"
+        )
+
+    try:
+        # Read existing trace
+        with open(trace_path, "r") as f:
+            trace_data = json.load(f)
+
+        # Add label fields
+        trace_data["label"] = payload.label
+        trace_data["reasoning"] = payload.reasoning
+        trace_data["confidence"] = payload.confidence
+        trace_data["labeled"] = True
+
+        # Write back
+        with open(trace_path, "w") as f:
+            json.dump(trace_data, f, indent=2)
+
+        return {"success": True, "trace_id": trace_id}
+
+    except json.JSONDecodeError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to parse trace file"
+        ) from exc
+    except Exception as exc:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to save label: {str(exc)}"
+        ) from exc
+
+
+@app.get("/api/splits/stats", response_model=SplitsStatsResponse)
+async def get_splits_stats() -> SplitsStatsResponse:
+    """Get statistics about data splits.
+
+    Returns whether splits exist and their sizes.
+    """
+    data_dir = Path(__file__).parent.parent / "data"
+    splits_metadata_path = data_dir / "splits_metadata.json"
+
+    # Count labeled traces
+    labeled_count = 0
+    if TRACES_DIR.exists():
+        for trace_file in TRACES_DIR.glob("trace_*.json"):
+            try:
+                with open(trace_file, "r") as f:
+                    trace_data = json.load(f)
+                if trace_data.get("labeled"):
+                    labeled_count += 1
+            except Exception:
+                continue
+
+    # Check if splits exist
+    if not splits_metadata_path.exists():
+        return SplitsStatsResponse(
+            exists=False,
+            labeled_count=labeled_count
+        )
+
+    # Load splits metadata
+    try:
+        with open(splits_metadata_path, "r") as f:
+            metadata = json.load(f)
+
+        return SplitsStatsResponse(
+            exists=True,
+            train_count=metadata.get("train_count", 0),
+            dev_count=metadata.get("dev_count", 0),
+            test_count=metadata.get("test_count", 0),
+            total_count=metadata.get("total_count", 0),
+            labeled_count=labeled_count
+        )
+    except Exception as exc:
+        logger.error(f"Failed to load splits metadata: {exc}")
+        return SplitsStatsResponse(
+            exists=False,
+            labeled_count=labeled_count
+        )
+
+
+@app.post("/api/splits/create")
+async def create_splits() -> Dict:
+    """Create train/dev/test splits from labeled traces.
+
+    Runs the split_data.py script to create the splits.
+    """
+    import subprocess
+
+    scripts_dir = Path(__file__).parent.parent / "scripts"
+    split_script = scripts_dir / "split_data.py"
+
+    if not split_script.exists():
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Split script not found"
+        )
+
+    try:
+        # Run the split script
+        result = subprocess.run(
+            ["python", str(split_script)],
+            capture_output=True,
+            text=True,
+            check=True
+        )
+
+        return {
+            "success": True,
+            "message": "Splits created successfully",
+            "output": result.stdout
+        }
+    except subprocess.CalledProcessError as exc:
+        logger.error(f"Failed to create splits: {exc.stderr}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to create splits: {exc.stderr}"
+        ) from exc
+    except Exception as exc:
+        logger.error(f"Failed to create splits: {exc}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to create splits: {str(exc)}"
+        ) from exc
+
+
+@app.post("/api/splits/reset")
+async def reset_splits() -> Dict:
+    """Reset/delete existing splits.
+
+    Removes all split files and metadata.
+    """
+    data_dir = Path(__file__).parent.parent / "data"
+
+    try:
+        # Remove split files
+        for split_file in ["train.jsonl", "dev.jsonl", "test.jsonl", "splits_metadata.json"]:
+            file_path = data_dir / split_file
+            if file_path.exists():
+                file_path.unlink()
+
+        return {
+            "success": True,
+            "message": "Splits reset successfully"
+        }
+    except Exception as exc:
+        logger.error(f"Failed to reset splits: {exc}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to reset splits: {str(exc)}"
+        ) from exc
+
+
+@app.get("/api/splits/train")
+async def get_train_set() -> List[Dict]:
+    """Get train set examples.
+
+    Returns the train set as a list of labeled traces.
+    """
+    data_dir = Path(__file__).parent.parent / "data"
+    train_path = data_dir / "train.jsonl"
+
+    if not train_path.exists():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Train set not found. Please create splits first."
+        )
+
+    try:
+        traces = []
+        with open(train_path, 'r') as f:
+            for line in f:
+                if line.strip():
+                    traces.append(json.loads(line))
+        return traces
+    except Exception as exc:
+        logger.error(f"Failed to load train set: {exc}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to load train set: {str(exc)}"
         ) from exc
 
 
@@ -455,6 +771,72 @@ async def run_evals(payload: EvalsRunRequest) -> EvalsRunResponse:
         metrics=metrics,
         system_prompt_hash=current_cache_key
     )
+
+
+@app.post("/api/evals/validate")
+async def validate_judge(payload: ValidateJudgeRequest) -> Dict:
+    """Validate judge against labeled dev or test set.
+
+    Runs judge on labeled data and compares predictions to ground truth.
+    Returns confusion matrix, TPR/TNR, and disagreements.
+    """
+    # Validate dataset parameter
+    if payload.dataset not in ["dev", "test"]:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Dataset must be 'dev' or 'test'"
+        )
+
+    # Validate judge prompt
+    if not payload.judge_prompt.strip():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Judge prompt cannot be empty"
+        )
+
+    # Get dataset path
+    data_dir = Path(__file__).parent.parent / "data"
+    dataset_path = data_dir / f"{payload.dataset}.jsonl"
+
+    if not dataset_path.exists():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"{payload.dataset.capitalize()} set not found. Please create splits first."
+        )
+
+    try:
+        # Run validation
+        results = validate_judge_on_dataset(dataset_path, payload.judge_prompt)
+
+        if "error" in results:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=results["error"]
+            )
+
+        # If evaluating on test set with provided TPR/TNR, calculate bias-corrected metrics
+        if payload.dataset == "test" and payload.tpr is not None and payload.tnr is not None:
+            # Calculate raw pass rate from judge predictions
+            judge_pass_count = sum(1 for r in results["all_results"] if r["judge_label"] == "PASS")
+            total = len(results["all_results"])
+
+            if total > 0:
+                # Calculate bias-corrected metrics using judgy methodology
+                corrected_metrics = calculate_judgy_metrics(
+                    results=[{"result": r["judge_label"]} for r in results["all_results"]],
+                    tpr=payload.tpr,
+                    tnr=payload.tnr
+                )
+                results["bias_corrected_metrics"] = corrected_metrics
+
+        return results
+
+    except Exception as exc:
+        logger.error(f"Failed to validate judge: {exc}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to validate judge: {str(exc)}"
+        ) from exc
 
 
 @app.get("/", response_class=HTMLResponse)

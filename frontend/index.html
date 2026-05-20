@@ -438,6 +438,259 @@
         }
       }
 
+      /* Label View Container */
+      #label-view {
+        display: none;
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 auto;
+        background: #ffffff;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        border-radius: 0 0 12px 12px;
+        padding: 24px;
+        overflow-y: auto;
+        max-height: calc(100vh - 180px);
+      }
+
+      #label-view.active {
+        display: block;
+      }
+
+      .label-header {
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+        border-bottom: 2px solid #28a745;
+      }
+
+      .label-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #343a40;
+        margin: 0 0 8px 0;
+      }
+
+      .label-stats {
+        font-size: 0.95rem;
+        color: #6c757d;
+      }
+
+      #label-container {
+        display: grid;
+        grid-template-columns: 1fr 400px;
+        gap: 24px;
+        height: calc(100vh - 300px);
+      }
+
+      .label-content-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        overflow-y: auto;
+        padding-right: 12px;
+      }
+
+      .label-controls-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
+        overflow-y: auto;
+      }
+
+      .label-section {
+        margin-bottom: 0;
+      }
+
+      .label-input-label {
+        display: block;
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: #343a40;
+        margin-bottom: 8px;
+      }
+
+      .label-query-box, .label-response-box {
+        padding: 12px;
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+
+      .label-query-box {
+        font-weight: 500;
+        color: #00529b;
+        background: #e0f0ff;
+      }
+
+      .label-response-box {
+        flex: 1;
+        overflow-y: auto;
+        min-height: 300px;
+      }
+
+      .label-buttons {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 12px;
+      }
+
+      .label-btn {
+        flex: 1;
+        padding: 16px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border: 2px solid;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .label-pass {
+        background: #ffffff;
+        color: #28a745;
+        border-color: #28a745;
+      }
+
+      .label-pass:hover {
+        background: #28a745;
+        color: #ffffff;
+      }
+
+      .label-pass.active {
+        background: #28a745;
+        color: #ffffff;
+      }
+
+      .label-fail {
+        background: #ffffff;
+        color: #dc3545;
+        border-color: #dc3545;
+      }
+
+      .label-fail:hover {
+        background: #dc3545;
+        color: #ffffff;
+      }
+
+      .label-fail.active {
+        background: #dc3545;
+        color: #ffffff;
+      }
+
+      .selected-label {
+        font-size: 0.9rem;
+        font-weight: 500;
+        padding: 8px 12px;
+        border-radius: 4px;
+        text-align: center;
+      }
+
+      .selected-label.pass {
+        background: #d4edda;
+        color: #155724;
+      }
+
+      .selected-label.fail {
+        background: #f8d7da;
+        color: #721c24;
+      }
+
+      .label-reasoning {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        font-family: 'Inter', sans-serif;
+        resize: vertical;
+        transition: border-color 0.2s ease-in-out;
+      }
+
+      .label-reasoning:focus {
+        outline: none;
+        border-color: #28a745;
+        box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.15);
+      }
+
+      .label-confidence {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        font-family: 'Inter', sans-serif;
+        background: #ffffff;
+        cursor: pointer;
+      }
+
+      .label-confidence:focus {
+        outline: none;
+        border-color: #28a745;
+        box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.15);
+      }
+
+      .label-action-buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .label-nav-btn {
+        padding: 12px 24px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        background: #f8f9fa;
+        color: #343a40;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .label-nav-btn:hover:not(:disabled) {
+        background: #e9ecef;
+      }
+
+      .label-nav-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .label-save-btn {
+        padding: 14px 24px;
+        font-size: 1.05rem;
+        font-weight: 600;
+        background: #28a745;
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .label-save-btn:hover:not(:disabled) {
+        background: #218838;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+      }
+
+      .label-save-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .label-controls-panel .label-input-label {
+        font-weight: 600;
+        color: #495057;
+      }
+
       /* Evals View Container */
       #evals-view {
         display: none;
@@ -469,40 +722,431 @@
         border-bottom: 2px solid #28a745;
       }
 
-      .test-cases-grid {
+      .train-set-help {
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin-bottom: 16px;
+      }
+
+      #train-set-container {
+        max-height: 400px;
+        overflow-y: auto;
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        background: #ffffff;
+      }
+
+      .train-example {
+        padding: 16px;
+        border-bottom: 1px solid #dee2e6;
+        transition: background-color 0.2s;
+      }
+
+      .train-example:last-child {
+        border-bottom: none;
+      }
+
+      .train-example:hover {
+        background: #f8f9fa;
+      }
+
+      .train-example-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+
+      .train-example-id {
+        font-weight: 600;
+        color: #495057;
+        font-size: 0.9rem;
+      }
+
+      .train-example-label {
+        padding: 4px 12px;
+        border-radius: 4px;
+        font-weight: 500;
+        font-size: 0.85rem;
+      }
+
+      .train-example-label.pass {
+        background: #d4edda;
+        color: #155724;
+      }
+
+      .train-example-label.fail {
+        background: #f8d7da;
+        color: #721c24;
+      }
+
+      .train-example-query {
+        font-size: 0.9rem;
+        color: #00529b;
+        background: #e0f0ff;
+        padding: 8px;
+        border-radius: 4px;
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+
+      .train-example-response {
+        font-size: 0.85rem;
+        color: #495057;
+        line-height: 1.5;
+        margin-bottom: 8px;
+        max-height: 100px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .train-example-response::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 20px;
+        background: linear-gradient(transparent, white);
+      }
+
+      .train-example-reasoning {
+        font-size: 0.85rem;
+        color: #6c757d;
+        font-style: italic;
+      }
+
+      .splits-info {
+        padding: 16px;
+        background: #f8f9fa;
+        border-radius: 6px;
+        border-left: 3px solid #28a745;
+        margin-bottom: 16px;
+      }
+
+      .splits-status {
+        margin: 0;
+        font-size: 0.95rem;
+        color: #343a40;
+        line-height: 1.6;
+      }
+
+      .splits-stats {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-top: 12px;
+      }
+
+      .split-stat {
+        text-align: center;
+        padding: 12px;
+        background: #ffffff;
+        border-radius: 4px;
+        border: 1px solid #dee2e6;
+      }
+
+      .split-stat-label {
+        font-size: 0.8rem;
+        color: #6c757d;
+        text-transform: uppercase;
+        font-weight: 500;
+        margin-bottom: 4px;
+      }
+
+      .split-stat-value {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #343a40;
+      }
+
+      .splits-actions {
+        display: flex;
+        gap: 12px;
+      }
+
+      .splits-btn {
+        padding: 10px 20px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .splits-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .splits-btn-primary {
+        background: #28a745;
+        color: #ffffff;
+      }
+
+      .splits-btn-primary:hover:not(:disabled) {
+        background: #218838;
+      }
+
+      .splits-btn-danger {
+        background: #dc3545;
+        color: #ffffff;
+      }
+
+      .splits-btn-danger:hover:not(:disabled) {
+        background: #c82333;
+      }
+
+      .validation-help {
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin-bottom: 16px;
+      }
+
+      .validation-controls {
+        display: flex;
+        gap: 12px;
         margin-bottom: 24px;
       }
 
-      .test-case-item {
-        display: flex;
-        flex-direction: column;
-      }
-
-      .test-case-label {
-        font-size: 0.875rem;
-        font-weight: 500;
-        color: #6c757d;
-        margin-bottom: 6px;
-      }
-
-      .test-case-input {
-        padding: 10px 12px;
-        border: 1px solid #ced4da;
-        border-radius: 6px;
+      .validation-btn {
+        padding: 12px 24px;
         font-size: 0.95rem;
-        font-family: 'Inter', sans-serif;
-        resize: vertical;
-        min-height: 60px;
-        transition: border-color 0.2s ease-in-out;
+        font-weight: 500;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
       }
 
-      .test-case-input:focus {
-        outline: none;
-        border-color: #28a745;
-        box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.15);
+      .validation-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .validation-btn-dev {
+        background: #007bff;
+        color: #ffffff;
+      }
+
+      .validation-btn-dev:hover:not(:disabled) {
+        background: #0056b3;
+      }
+
+      .validation-btn-test {
+        background: #ffc107;
+        color: #000000;
+      }
+
+      .validation-btn-test:hover:not(:disabled) {
+        background: #e0a800;
+      }
+
+      .validation-btn-run {
+        background: #28a745;
+        color: #ffffff;
+      }
+
+      .validation-btn-run:hover:not(:disabled) {
+        background: #218838;
+      }
+
+      .validation-results {
+        display: none;
+      }
+
+      .validation-results.visible {
+        display: block;
+      }
+
+      .confusion-matrix-container {
+        margin: 24px 0;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 6px;
+      }
+
+      .confusion-matrix-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #343a40;
+        margin-bottom: 16px;
+      }
+
+      .confusion-matrix {
+        display: grid;
+        grid-template-columns: auto 1fr 1fr;
+        gap: 2px;
+        background: #dee2e6;
+        border: 2px solid #dee2e6;
+        border-radius: 6px;
+        overflow: hidden;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+
+      .cm-cell {
+        padding: 16px;
+        background: #ffffff;
+        text-align: center;
+        font-weight: 500;
+      }
+
+      .cm-header {
+        background: #343a40;
+        color: #ffffff;
+        font-weight: 600;
+      }
+
+      .cm-label {
+        background: #343a40;
+        color: #ffffff;
+        font-weight: 600;
+      }
+
+      .cm-tp {
+        background: #d4edda;
+        color: #155724;
+        font-size: 1.5rem;
+      }
+
+      .cm-fp {
+        background: #f8d7da;
+        color: #721c24;
+        font-size: 1.5rem;
+      }
+
+      .cm-fn {
+        background: #f8d7da;
+        color: #721c24;
+        font-size: 1.5rem;
+      }
+
+      .cm-tn {
+        background: #d4edda;
+        color: #155724;
+        font-size: 1.5rem;
+      }
+
+      .validation-metrics {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin: 24px 0;
+      }
+
+      .validation-metric {
+        text-align: center;
+        padding: 16px;
+        background: #ffffff;
+        border-radius: 6px;
+        border: 1px solid #dee2e6;
+      }
+
+      .validation-metric-label {
+        font-size: 0.85rem;
+        color: #6c757d;
+        text-transform: uppercase;
+        font-weight: 500;
+        margin-bottom: 8px;
+      }
+
+      .validation-metric-value {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #343a40;
+      }
+
+      .bias-corrected-section {
+        margin: 32px 0;
+        padding: 20px;
+        background: #e7f3ff;
+        border-left: 4px solid #007bff;
+        border-radius: 6px;
+      }
+
+      .bias-corrected-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #004085;
+        margin-bottom: 8px;
+      }
+
+      .bias-corrected-note {
+        font-size: 0.9rem;
+        color: #004085;
+        margin-bottom: 16px;
+        line-height: 1.5;
+      }
+
+      .bias-corrected-section .validation-metrics {
+        grid-template-columns: repeat(4, 1fr);
+        margin: 0;
+      }
+
+      .disagreements-container {
+        margin-top: 24px;
+      }
+
+      .disagreements-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #343a40;
+        margin-bottom: 16px;
+      }
+
+      .disagreement-item {
+        padding: 16px;
+        background: #fff3cd;
+        border-left: 4px solid #ffc107;
+        border-radius: 6px;
+        margin-bottom: 12px;
+      }
+
+      .disagreement-header {
+        font-weight: 600;
+        color: #856404;
+        margin-bottom: 8px;
+      }
+
+      .disagreement-labels {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 12px;
+        font-size: 0.9rem;
+      }
+
+      .disagreement-label {
+        padding: 4px 12px;
+        border-radius: 4px;
+        font-weight: 500;
+      }
+
+      .disagreement-label.pass {
+        background: #d4edda;
+        color: #155724;
+      }
+
+      .disagreement-label.fail {
+        background: #f8d7da;
+        color: #721c24;
+      }
+
+      .disagreement-text {
+        font-size: 0.9rem;
+        color: #343a40;
+        line-height: 1.5;
+        margin-bottom: 8px;
+      }
+
+      .disagreement-query {
+        font-weight: 500;
+        color: #00529b;
+        background: #e0f0ff;
+        padding: 8px;
+        border-radius: 4px;
+        margin-bottom: 8px;
       }
 
       .judge-prompt-container {
@@ -564,27 +1208,21 @@
         width: 100px;
       }
 
-      .run-evals-btn {
-        padding: 14px 32px;
-        font-size: 1.1rem;
-        font-weight: 600;
-        background-color: #28a745;
-        color: #fff;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background-color 0.2s ease-in-out;
-        display: block;
-        margin: 0 auto 32px auto;
-      }
-
-      .run-evals-btn:hover:not(:disabled) {
-        background-color: #218838;
-      }
-
-      .run-evals-btn:disabled {
-        background-color: #adb5bd;
+      .tpr-tnr-input[readonly] {
+        background: #e9ecef;
         cursor: not-allowed;
+        font-weight: 600;
+        color: #495057;
+      }
+
+      .calibration-note {
+        margin-top: 12px;
+        font-size: 0.9rem;
+        color: #6c757d;
+        background: #e7f3ff;
+        padding: 12px;
+        border-radius: 6px;
+        border-left: 3px solid #007bff;
       }
 
       .results-container {
@@ -743,6 +1381,91 @@
         overflow: visible;
       }
 
+      /* Train Set Comparison Table */
+      .train-comparison-header {
+        margin-bottom: 20px;
+      }
+
+      .train-comparison-header h3 {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #343a40;
+        margin-bottom: 8px;
+      }
+
+      .train-comparison-header p {
+        font-size: 0.95rem;
+        color: #6c757d;
+        margin: 0;
+      }
+
+      .train-comparison-table {
+        overflow-x: auto;
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+      }
+
+      .train-comparison-table table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #ffffff;
+      }
+
+      .train-comparison-table thead {
+        background: #f8f9fa;
+        border-bottom: 2px solid #dee2e6;
+      }
+
+      .train-comparison-table th {
+        padding: 12px;
+        text-align: left;
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: #495057;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .train-comparison-table td {
+        padding: 12px;
+        border-top: 1px solid #dee2e6;
+        font-size: 0.9rem;
+        vertical-align: top;
+      }
+
+      .train-comparison-table tr.agreement {
+        background: #f8f9fa;
+      }
+
+      .train-comparison-table tr.disagreement {
+        background: #fff3cd;
+        border-left: 4px solid #ffc107;
+      }
+
+      .train-comparison-table .query-cell {
+        max-width: 200px;
+        font-weight: 500;
+        color: #007bff;
+      }
+
+      .train-comparison-table .output-cell {
+        max-width: 250px;
+        color: #6c757d;
+        font-size: 0.85rem;
+      }
+
+      .train-comparison-table .result-cell {
+        text-align: center;
+        white-space: nowrap;
+      }
+
+      .train-comparison-table .reasoning-cell {
+        max-width: 300px;
+        color: #495057;
+        font-size: 0.85rem;
+        line-height: 1.5;
+      }
+
       .expand-toggle {
         display: inline-block;
         margin-left: 6px;
@@ -754,6 +1477,31 @@
 
       .expand-toggle:hover {
         color: #218838;
+      }
+
+      .keyboard-hint {
+        font-size: 0.8rem;
+        color: #6c757d;
+        margin-top: 16px;
+        padding: 12px;
+        background: #ffffff;
+        border-radius: 6px;
+        border: 1px solid #dee2e6;
+      }
+
+      .keyboard-hint strong {
+        color: #495057;
+      }
+
+      @media (max-width: 1200px) {
+        #label-container {
+          grid-template-columns: 1fr;
+          height: auto;
+        }
+
+        .label-controls-panel {
+          position: static;
+        }
       }
 
       @media (max-width: 768px) {
@@ -773,6 +1521,7 @@
     <div id="tab-nav">
       <button class="tab-btn active" data-tab="chat">Chat</button>
       <button class="tab-btn" data-tab="traces">Traces</button>
+      <button class="tab-btn" data-tab="label">Label</button>
       <button class="tab-btn" data-tab="evals">Evals</button>
     </div>
 
@@ -812,12 +1561,92 @@
       </div>
     </div>
 
+    <!-- Label View -->
+    <div id="label-view">
+      <div class="label-header">
+        <h3 class="label-title">Label Traces for Judge Development</h3>
+        <div class="label-stats">
+          <span id="label-progress">Loading...</span>
+        </div>
+      </div>
+
+      <div id="label-container">
+        <!-- Left Panel: Trace Content -->
+        <div class="label-content-panel">
+          <div class="label-section">
+            <label class="label-input-label">Query</label>
+            <div id="label-query" class="label-query-box"></div>
+          </div>
+
+          <div class="label-section" style="flex: 1; display: flex; flex-direction: column;">
+            <label class="label-input-label">Response</label>
+            <div id="label-response" class="label-response-box"></div>
+          </div>
+        </div>
+
+        <!-- Right Panel: Labeling Controls -->
+        <div class="label-controls-panel">
+          <div class="label-section">
+            <label class="label-input-label">Label</label>
+            <div class="label-buttons">
+              <button id="label-pass-btn" class="label-btn label-pass">PASS</button>
+              <button id="label-fail-btn" class="label-btn label-fail">FAIL</button>
+            </div>
+            <div id="selected-label" class="selected-label"></div>
+          </div>
+
+          <div class="label-section">
+            <label class="label-input-label" for="label-reasoning">Reasoning</label>
+            <textarea id="label-reasoning" class="label-reasoning" rows="6" placeholder="Explain why this passes or fails..."></textarea>
+          </div>
+
+          <div class="label-section">
+            <label class="label-input-label">Confidence</label>
+            <select id="label-confidence" class="label-confidence">
+              <option value="HIGH">High</option>
+              <option value="MEDIUM" selected>Medium</option>
+              <option value="LOW">Low</option>
+            </select>
+          </div>
+
+          <div class="label-section" style="margin-top: auto;">
+            <button id="label-save-btn" class="label-save-btn" style="width: 100%; margin-bottom: 12px;">Save & Next</button>
+            <div class="label-action-buttons">
+              <button id="label-prev-btn" class="label-nav-btn">← Previous</button>
+              <button id="label-next-btn" class="label-nav-btn">Next →</button>
+            </div>
+          </div>
+
+          <div class="keyboard-hint">
+            <strong>Shortcuts:</strong><br>
+            <strong>P</strong> or <strong>1</strong> = PASS<br>
+            <strong>F</strong> or <strong>2</strong> = FAIL<br>
+            <strong>←</strong> / <strong>→</strong> = Navigate
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Evals View -->
     <div id="evals-view">
       <div class="evals-section">
-        <h3 class="evals-section-title">Test Cases</h3>
-        <div class="test-cases-grid" id="test-cases-grid">
-          <!-- Test cases will be populated here -->
+        <h3 class="evals-section-title">Data Splits</h3>
+        <div class="splits-info" id="splits-info">
+          <p class="splits-status">Loading split information...</p>
+        </div>
+        <div class="splits-actions">
+          <button id="create-splits-btn" class="splits-btn splits-btn-primary">Create Splits</button>
+          <button id="reset-splits-btn" class="splits-btn splits-btn-danger">Reset Splits</button>
+        </div>
+      </div>
+
+      <div class="evals-section">
+        <h3 class="evals-section-title">Train Set Examples</h3>
+        <p class="train-set-help">
+          Use these examples to create few-shot examples in your judge prompt below.
+        </p>
+        <div id="train-set-container">
+          <div class="empty-state">Create splits first to view train set examples.</div>
         </div>
       </div>
 
@@ -829,22 +1658,39 @@
       </div>
 
       <div class="evals-section">
-        <h3 class="evals-section-title">Judge Accuracy (Advanced)</h3>
+        <h3 class="evals-section-title">Judge Calibration (Measured on Dev Set)</h3>
         <div class="tpr-tnr-container">
           <div class="tpr-tnr-field">
             <label class="tpr-tnr-label">True Positive Rate (TPR)</label>
-            <span class="tpr-tnr-sublabel">Judge correctly identifies passes</span>
-            <input type="number" id="tpr-input" class="tpr-tnr-input" min="0" max="1" step="0.01" value="0.95">
+            <span class="tpr-tnr-sublabel">Measured from dev set validation</span>
+            <input type="number" id="tpr-input" class="tpr-tnr-input" min="0" max="1" step="0.01" value="0.95" readonly>
           </div>
           <div class="tpr-tnr-field">
             <label class="tpr-tnr-label">True Negative Rate (TNR)</label>
-            <span class="tpr-tnr-sublabel">Judge correctly identifies failures</span>
-            <input type="number" id="tnr-input" class="tpr-tnr-input" min="0" max="1" step="0.01" value="0.95">
+            <span class="tpr-tnr-sublabel">Measured from dev set validation</span>
+            <input type="number" id="tnr-input" class="tpr-tnr-input" min="0" max="1" step="0.01" value="0.95" readonly>
           </div>
         </div>
+        <p class="calibration-note">
+          💡 These values are automatically calculated when you validate on the dev set. They will be used for bias correction in the final test set evaluation.
+        </p>
       </div>
 
-      <button id="run-evals-btn" class="run-evals-btn">Run Evaluation</button>
+      <div class="evals-section">
+        <h3 class="evals-section-title">Judge Validation</h3>
+        <p class="validation-help">
+          Validate your judge against labeled dev or test set to measure actual TPR/TNR.
+        </p>
+        <div class="validation-controls">
+          <button id="run-evals-btn" class="validation-btn validation-btn-run">Run on Train Set</button>
+          <button id="validate-dev-btn" class="validation-btn validation-btn-dev">Validate on Dev Set</button>
+          <button id="validate-test-btn" class="validation-btn validation-btn-test">🔒 Evaluate on Test Set</button>
+        </div>
+
+        <div id="validation-results" class="validation-results">
+          <!-- Validation results will be populated here -->
+        </div>
+      </div>
 
       <div id="results-container" class="results-container">
         <div class="evals-section">
@@ -1084,17 +1930,32 @@
           if (tabName === 'chat') {
             document.getElementById('app-container').style.display = 'flex';
             document.getElementById('traces-view').classList.remove('active');
+            document.getElementById('label-view').classList.remove('active');
             document.getElementById('evals-view').classList.remove('active');
           } else if (tabName === 'traces') {
             document.getElementById('app-container').style.display = 'none';
             document.getElementById('traces-view').classList.add('active');
+            document.getElementById('label-view').classList.remove('active');
             document.getElementById('evals-view').classList.remove('active');
 
             // Always reload traces to pick up new conversations
             TracesListView.loadTraces(1);
+          } else if (tabName === 'label') {
+            document.getElementById('app-container').style.display = 'none';
+            document.getElementById('traces-view').classList.remove('active');
+            document.getElementById('label-view').classList.add('active');
+            document.getElementById('evals-view').classList.remove('active');
+
+            // Initialize label view if not already done
+            if (!LabelView.initialized) {
+              LabelView.init();
+            } else {
+              LabelView.loadTraces();
+            }
           } else if (tabName === 'evals') {
             document.getElementById('app-container').style.display = 'none';
             document.getElementById('traces-view').classList.remove('active');
+            document.getElementById('label-view').classList.remove('active');
             document.getElementById('evals-view').classList.add('active');
 
             // Initialize evals view if not already done
@@ -1305,6 +2166,210 @@
       };
 
       // ------------------------------------------------------------------------
+      // LabelView - Labeling interface for PASS/FAIL annotation
+      // ------------------------------------------------------------------------
+      const LabelView = {
+        initialized: false,
+        traces: [],
+        currentIndex: 0,
+        currentLabel: null,
+
+        async init() {
+          await this.loadTraces();
+          this.setupEventListeners();
+          this.initialized = true;
+        },
+
+        async loadTraces() {
+          try {
+            const res = await fetch('/api/traces/unlabeled');
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+            const data = await res.json();
+            this.traces = data.traces;
+
+            this.updateStats(data.total, data.labeled_count);
+
+            if (this.traces.length > 0) {
+              this.currentIndex = 0;
+              this.renderTrace();
+            } else {
+              this.showEmptyState();
+            }
+          } catch (error) {
+            console.error('Error loading traces:', error);
+            alert('Failed to load traces. Please refresh the page.');
+          }
+        },
+
+        updateStats(unlabeled, labeled) {
+          const total = unlabeled + labeled;
+          const progress = total > 0 ? `${labeled} / ${total} labeled (${Math.round(labeled/total*100)}%)` : 'No traces available';
+          document.getElementById('label-progress').textContent = progress;
+        },
+
+        showEmptyState() {
+          document.getElementById('label-query').textContent = 'No unlabeled traces available.';
+          document.getElementById('label-response').textContent = 'Generate some traces first by chatting with the bot!';
+          document.getElementById('label-save-btn').disabled = true;
+          document.getElementById('label-prev-btn').disabled = true;
+          document.getElementById('label-next-btn').disabled = true;
+        },
+
+        renderTrace() {
+          if (this.traces.length === 0) {
+            this.showEmptyState();
+            return;
+          }
+
+          const trace = this.traces[this.currentIndex];
+
+          document.getElementById('label-query').textContent = trace.query || 'No query';
+          document.getElementById('label-response').textContent = trace.response || 'No response';
+
+          // Reset form
+          this.currentLabel = trace.label || null;
+          document.getElementById('label-reasoning').value = trace.reasoning || '';
+          document.getElementById('label-confidence').value = trace.confidence || '';
+
+          // Update label buttons
+          this.updateLabelButtons();
+
+          // Update navigation buttons
+          document.getElementById('label-prev-btn').disabled = this.currentIndex === 0;
+          document.getElementById('label-next-btn').disabled = this.currentIndex === this.traces.length - 1;
+        },
+
+        updateLabelButtons() {
+          const passBtn = document.getElementById('label-pass-btn');
+          const failBtn = document.getElementById('label-fail-btn');
+          const selectedLabel = document.getElementById('selected-label');
+
+          passBtn.classList.remove('active');
+          failBtn.classList.remove('active');
+          selectedLabel.className = 'selected-label';
+          selectedLabel.textContent = '';
+
+          if (this.currentLabel === 'PASS') {
+            passBtn.classList.add('active');
+            selectedLabel.classList.add('pass');
+            selectedLabel.textContent = 'PASS selected';
+          } else if (this.currentLabel === 'FAIL') {
+            failBtn.classList.add('active');
+            selectedLabel.classList.add('fail');
+            selectedLabel.textContent = 'FAIL selected';
+          }
+        },
+
+        setupEventListeners() {
+          // Label buttons
+          document.getElementById('label-pass-btn').addEventListener('click', () => {
+            this.currentLabel = 'PASS';
+            this.updateLabelButtons();
+          });
+
+          document.getElementById('label-fail-btn').addEventListener('click', () => {
+            this.currentLabel = 'FAIL';
+            this.updateLabelButtons();
+          });
+
+          // Navigation buttons
+          document.getElementById('label-prev-btn').addEventListener('click', () => {
+            if (this.currentIndex > 0) {
+              this.currentIndex--;
+              this.renderTrace();
+            }
+          });
+
+          document.getElementById('label-next-btn').addEventListener('click', () => {
+            if (this.currentIndex < this.traces.length - 1) {
+              this.currentIndex++;
+              this.renderTrace();
+            }
+          });
+
+          // Save button
+          document.getElementById('label-save-btn').addEventListener('click', () => {
+            this.saveLabel();
+          });
+
+          // Keyboard shortcuts
+          document.addEventListener('keydown', (e) => {
+            // Only handle if label view is active
+            if (!document.getElementById('label-view').classList.contains('active')) return;
+
+            // Don't handle if typing in textarea
+            if (e.target.tagName === 'TEXTAREA') return;
+
+            if (e.key === 'ArrowLeft') {
+              e.preventDefault();
+              document.getElementById('label-prev-btn').click();
+            } else if (e.key === 'ArrowRight') {
+              e.preventDefault();
+              document.getElementById('label-next-btn').click();
+            } else if (e.key === '1' || e.key === 'p') {
+              e.preventDefault();
+              document.getElementById('label-pass-btn').click();
+            } else if (e.key === '2' || e.key === 'f') {
+              e.preventDefault();
+              document.getElementById('label-fail-btn').click();
+            }
+          });
+        },
+
+        async saveLabel() {
+          const trace = this.traces[this.currentIndex];
+          const reasoning = document.getElementById('label-reasoning').value.trim();
+          const confidence = document.getElementById('label-confidence').value;
+
+          // Validation
+          if (!this.currentLabel) {
+            alert('Please select PASS or FAIL.');
+            return;
+          }
+
+          const saveBtn = document.getElementById('label-save-btn');
+          saveBtn.disabled = true;
+          saveBtn.textContent = 'Saving...';
+
+          try {
+            const res = await fetch(`/api/traces/${trace.id}/label`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                label: this.currentLabel,
+                reasoning: reasoning,
+                confidence: confidence
+              })
+            });
+
+            if (!res.ok) {
+              const errorData = await res.json().catch(() => ({}));
+              throw new Error(errorData.detail || `HTTP ${res.status}`);
+            }
+
+            // Remove this trace from the unlabeled list
+            this.traces.splice(this.currentIndex, 1);
+
+            // Adjust index if needed
+            if (this.currentIndex >= this.traces.length && this.currentIndex > 0) {
+              this.currentIndex--;
+            }
+
+            // Reload to update stats
+            await this.loadTraces();
+
+          } catch (error) {
+            console.error('Error saving label:', error);
+            alert(`Failed to save label: ${error.message}`);
+          } finally {
+            saveBtn.disabled = false;
+            saveBtn.textContent = 'Save & Next';
+          }
+        }
+      };
+
+      // ------------------------------------------------------------------------
       // EvalsView - Evaluation dashboard
       // ------------------------------------------------------------------------
       const EvalsView = {
@@ -1318,38 +2383,349 @@
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
             this.config = await res.json();
-            this.testCases = this.config.test_cases;
 
-            this.renderTestCases();
             this.renderJudgePrompt();
             this.setupEventListeners();
+            await this.loadSplitsStats();
+            await this.loadTrainSet();
           } catch (error) {
             console.error('Error loading evals config:', error);
             alert('Failed to load evals configuration. Please refresh the page.');
           }
         },
 
-        renderTestCases() {
-          const grid = document.getElementById('test-cases-grid');
-          grid.innerHTML = '';
+        async loadSplitsStats() {
+          try {
+            const res = await fetch('/api/splits/stats');
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-          this.testCases.forEach((tc, index) => {
-            const item = document.createElement('div');
-            item.className = 'test-case-item';
+            const stats = await res.json();
+            this.renderSplitsInfo(stats);
+          } catch (error) {
+            console.error('Error loading splits stats:', error);
+            document.getElementById('splits-info').innerHTML = '<p class="splits-status">Failed to load split information.</p>';
+          }
+        },
 
-            const label = document.createElement('label');
-            label.className = 'test-case-label';
-            label.textContent = `Test Case ${tc.id}`;
+        renderSplitsInfo(stats) {
+          const container = document.getElementById('splits-info');
 
-            const textarea = document.createElement('textarea');
-            textarea.className = 'test-case-input';
-            textarea.dataset.id = tc.id;
-            textarea.value = tc.query;
-            textarea.rows = 3;
+          if (!stats.exists) {
+            container.innerHTML = `
+              <p class="splits-status">
+                ⚠️ No splits created yet. You have <strong>${stats.labeled_count} labeled traces</strong>.
+                Create splits to begin judge development workflow.
+              </p>
+            `;
+            document.getElementById('create-splits-btn').disabled = stats.labeled_count === 0;
+            document.getElementById('reset-splits-btn').disabled = true;
+          } else {
+            container.innerHTML = `
+              <p class="splits-status">
+                ✅ Splits created with <strong>${stats.total_count} traces</strong>
+                (${stats.labeled_count} labeled available)
+              </p>
+              <div class="splits-stats">
+                <div class="split-stat">
+                  <div class="split-stat-label">Train</div>
+                  <div class="split-stat-value">${stats.train_count}</div>
+                </div>
+                <div class="split-stat">
+                  <div class="split-stat-label">Dev</div>
+                  <div class="split-stat-value">${stats.dev_count}</div>
+                </div>
+                <div class="split-stat">
+                  <div class="split-stat-label">Test</div>
+                  <div class="split-stat-value">${stats.test_count}</div>
+                </div>
+                <div class="split-stat">
+                  <div class="split-stat-label">Total</div>
+                  <div class="split-stat-value">${stats.total_count}</div>
+                </div>
+              </div>
+            `;
+            document.getElementById('create-splits-btn').disabled = true;
+            document.getElementById('reset-splits-btn').disabled = false;
 
-            item.appendChild(label);
-            item.appendChild(textarea);
-            grid.appendChild(item);
+            // Load train set when splits exist
+            this.loadTrainSet();
+          }
+        },
+
+        async createSplits() {
+          const btn = document.getElementById('create-splits-btn');
+          btn.disabled = true;
+          btn.textContent = 'Creating splits...';
+
+          try {
+            const res = await fetch('/api/splits/create', { method: 'POST' });
+            if (!res.ok) {
+              const errorData = await res.json().catch(() => ({}));
+              throw new Error(errorData.detail || `HTTP ${res.status}`);
+            }
+
+            await this.loadSplitsStats();
+            await this.loadTrainSet();
+            alert('Splits created successfully!');
+          } catch (error) {
+            console.error('Error creating splits:', error);
+            alert(`Failed to create splits: ${error.message}`);
+            btn.disabled = false;
+          } finally {
+            btn.textContent = 'Create Splits';
+          }
+        },
+
+        async resetSplits() {
+          if (!confirm('Are you sure you want to reset/delete all splits? This cannot be undone.')) {
+            return;
+          }
+
+          const btn = document.getElementById('reset-splits-btn');
+          btn.disabled = true;
+          btn.textContent = 'Resetting...';
+
+          try {
+            const res = await fetch('/api/splits/reset', { method: 'POST' });
+            if (!res.ok) {
+              const errorData = await res.json().catch(() => ({}));
+              throw new Error(errorData.detail || `HTTP ${res.status}`);
+            }
+
+            await this.loadSplitsStats();
+            await this.loadTrainSet();
+            alert('Splits reset successfully!');
+          } catch (error) {
+            console.error('Error resetting splits:', error);
+            alert(`Failed to reset splits: ${error.message}`);
+          } finally {
+            btn.disabled = false;
+            btn.textContent = 'Reset Splits';
+          }
+        },
+
+        async validateJudge(dataset) {
+          const judgePrompt = document.getElementById('judge-prompt').value.trim();
+
+          if (!judgePrompt) {
+            alert('Please enter a judge prompt first.');
+            return;
+          }
+
+          const btnId = dataset === 'dev' ? 'validate-dev-btn' : 'validate-test-btn';
+          const btn = document.getElementById(btnId);
+          const originalText = btn.textContent;
+          btn.disabled = true;
+          btn.textContent = 'Validating...';
+
+          const resultsContainer = document.getElementById('validation-results');
+          resultsContainer.classList.remove('visible');
+
+          try {
+            // Get TPR/TNR for test set evaluation
+            let requestBody = {
+              judge_prompt: judgePrompt,
+              dataset: dataset
+            };
+
+            // If evaluating on test set, include calibrated TPR/TNR
+            if (dataset === 'test') {
+              const tpr = parseFloat(document.getElementById('tpr-input').value);
+              const tnr = parseFloat(document.getElementById('tnr-input').value);
+              requestBody.tpr = tpr;
+              requestBody.tnr = tnr;
+            }
+
+            const res = await fetch('/api/evals/validate', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(requestBody)
+            });
+
+            if (!res.ok) {
+              const errorData = await res.json().catch(() => ({}));
+              throw new Error(errorData.detail || `HTTP ${res.status}`);
+            }
+
+            const validationData = await res.json();
+
+            // If validating on dev set, update TPR/TNR inputs
+            if (dataset === 'dev') {
+              const tpr = validationData.metrics.tpr;
+              const tnr = validationData.metrics.tnr;
+              document.getElementById('tpr-input').value = tpr.toFixed(2);
+              document.getElementById('tnr-input').value = tnr.toFixed(2);
+            }
+
+            this.renderValidationResults(validationData, dataset);
+            resultsContainer.classList.add('visible');
+
+            // Scroll to results
+            resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+          } catch (error) {
+            console.error('Error validating judge:', error);
+            alert(`Failed to validate judge: ${error.message}`);
+          } finally {
+            btn.disabled = false;
+            btn.textContent = originalText;
+          }
+        },
+
+        renderValidationResults(data, dataset) {
+          const container = document.getElementById('validation-results');
+          const cm = data.confusion_matrix;
+          const metrics = data.metrics;
+          const disagreements = data.disagreements || [];
+          const biasCorrect = data.bias_corrected_metrics;
+
+          const datasetLabel = dataset === 'dev' ? 'Dev Set' : '🔒 Test Set';
+          const datasetColor = dataset === 'dev' ? '#007bff' : '#ffc107';
+
+          let html = `
+            <div class="confusion-matrix-container">
+              <div class="confusion-matrix-title" style="color: ${datasetColor}">${datasetLabel} Validation Results</div>
+
+              <div class="confusion-matrix">
+                <div class="cm-cell cm-header"></div>
+                <div class="cm-cell cm-header">Judge: PASS</div>
+                <div class="cm-cell cm-header">Judge: FAIL</div>
+
+                <div class="cm-cell cm-label">Ground Truth: PASS</div>
+                <div class="cm-cell cm-tp">${cm.TP}</div>
+                <div class="cm-cell cm-fn">${cm.FN}</div>
+
+                <div class="cm-cell cm-label">Ground Truth: FAIL</div>
+                <div class="cm-cell cm-fp">${cm.FP}</div>
+                <div class="cm-cell cm-tn">${cm.TN}</div>
+              </div>
+            </div>
+
+            <div class="validation-metrics">
+              <div class="validation-metric">
+                <div class="validation-metric-label">Accuracy</div>
+                <div class="validation-metric-value">${(metrics.accuracy * 100).toFixed(1)}%</div>
+              </div>
+              <div class="validation-metric">
+                <div class="validation-metric-label">TPR (Sensitivity)</div>
+                <div class="validation-metric-value">${(metrics.tpr * 100).toFixed(1)}%</div>
+              </div>
+              <div class="validation-metric">
+                <div class="validation-metric-label">TNR (Specificity)</div>
+                <div class="validation-metric-value">${(metrics.tnr * 100).toFixed(1)}%</div>
+              </div>
+            </div>
+
+            ${biasCorrect ? `
+              <div class="bias-corrected-section">
+                <div class="bias-corrected-title">📊 Bias-Corrected Metrics (Judgy Methodology)</div>
+                <div class="bias-corrected-note">
+                  These metrics correct for judge imperfection using TPR=${biasCorrect.tpr.toFixed(2)} and TNR=${biasCorrect.tnr.toFixed(2)} measured on dev set.
+                </div>
+                <div class="validation-metrics">
+                  <div class="validation-metric">
+                    <div class="validation-metric-label">Raw Pass Rate</div>
+                    <div class="validation-metric-value">${(biasCorrect.raw_pass_rate * 100).toFixed(1)}%</div>
+                  </div>
+                  <div class="validation-metric">
+                    <div class="validation-metric-label">Corrected Pass Rate</div>
+                    <div class="validation-metric-value">${(biasCorrect.corrected_pass_rate * 100).toFixed(1)}%</div>
+                  </div>
+                  <div class="validation-metric">
+                    <div class="validation-metric-label">95% Confidence Interval</div>
+                    <div class="validation-metric-value">[${(biasCorrect.confidence_interval[0] * 100).toFixed(1)}%, ${(biasCorrect.confidence_interval[1] * 100).toFixed(1)}%]</div>
+                  </div>
+                  <div class="validation-metric">
+                    <div class="validation-metric-label">Correction Applied</div>
+                    <div class="validation-metric-value">${(biasCorrect.correction_applied * 100).toFixed(1)}%</div>
+                  </div>
+                </div>
+              </div>
+            ` : ''}
+
+            <div class="disagreements-container">
+              <div class="disagreements-title">
+                Disagreements (${disagreements.length} / ${data.total_traces})
+              </div>
+              ${disagreements.length === 0 ? '<p>🎉 Perfect agreement! Judge matches all ground truth labels.</p>' : ''}
+              ${disagreements.map((d, i) => `
+                <div class="disagreement-item">
+                  <div class="disagreement-header">Disagreement #${i + 1}</div>
+                  <div class="disagreement-query">${this.escapeHtml(d.query)}</div>
+                  <div class="disagreement-labels">
+                    <span class="disagreement-label ${d.ground_truth.toLowerCase()}">Human: ${d.ground_truth}</span>
+                    <span class="disagreement-label ${d.judge_label.toLowerCase()}">Judge: ${d.judge_label}</span>
+                  </div>
+                  <div class="disagreement-text">
+                    <strong>Human reasoning:</strong> ${this.escapeHtml(d.human_reasoning || 'N/A')}
+                  </div>
+                  <div class="disagreement-text">
+                    <strong>Judge reasoning:</strong> ${this.escapeHtml(d.judge_reasoning || 'N/A')}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          `;
+
+          container.innerHTML = html;
+        },
+
+        escapeHtml(text) {
+          const div = document.createElement('div');
+          div.textContent = text;
+          return div.innerHTML;
+        },
+
+        async loadTrainSet() {
+          const container = document.getElementById('train-set-container');
+
+          try {
+            const res = await fetch('/api/splits/train');
+            if (!res.ok) {
+              if (res.status === 404) {
+                container.innerHTML = '<div class="empty-state">Train set not found. Create splits first.</div>';
+              } else {
+                container.innerHTML = '<div class="empty-state">Failed to load train set.</div>';
+              }
+              return;
+            }
+
+            const trainExamples = await res.json();
+
+            if (trainExamples.length === 0) {
+              container.innerHTML = '<div class="empty-state">Train set is empty.</div>';
+              return;
+            }
+
+            this.renderTrainSet(trainExamples);
+          } catch (error) {
+            console.error('Error loading train set:', error);
+            container.innerHTML = '<div class="empty-state">Create splits first to view train set examples.</div>';
+          }
+        },
+
+        renderTrainSet(examples) {
+          const container = document.getElementById('train-set-container');
+          container.innerHTML = '';
+
+          examples.forEach((example, index) => {
+            const exampleDiv = document.createElement('div');
+            exampleDiv.className = 'train-example';
+
+            const labelClass = example.label.toLowerCase();
+            const responsePreview = example.response.substring(0, 200) + (example.response.length > 200 ? '...' : '');
+
+            exampleDiv.innerHTML = `
+              <div class="train-example-header">
+                <div class="train-example-id">Example ${index + 1}</div>
+                <div class="train-example-label ${labelClass}">${example.label}</div>
+              </div>
+              <div class="train-example-query">${this.escapeHtml(example.query)}</div>
+              <div class="train-example-response">${this.escapeHtml(responsePreview)}</div>
+              ${example.reasoning ? `<div class="train-example-reasoning">"${this.escapeHtml(example.reasoning)}"</div>` : ''}
+            `;
+
+            container.appendChild(exampleDiv);
           });
         },
 
@@ -1359,6 +2735,24 @@
         },
 
         setupEventListeners() {
+          document.getElementById('create-splits-btn').addEventListener('click', () => {
+            this.createSplits();
+          });
+
+          document.getElementById('reset-splits-btn').addEventListener('click', () => {
+            this.resetSplits();
+          });
+
+          document.getElementById('validate-dev-btn').addEventListener('click', () => {
+            this.validateJudge('dev');
+          });
+
+          document.getElementById('validate-test-btn').addEventListener('click', () => {
+            if (confirm('⚠️ This is your final test set evaluation. Only run this once you have finished iterating on your judge using the dev set. Continue?')) {
+              this.validateJudge('test');
+            }
+          });
+
           document.getElementById('run-evals-btn').addEventListener('click', () => {
             this.runEvaluation();
           });
@@ -1368,17 +2762,31 @@
           const btn = document.getElementById('run-evals-btn');
           const resultsContainer = document.getElementById('results-container');
 
-          // Gather test cases from UI
-          const testCaseElements = document.querySelectorAll('.test-case-input');
-          const testCases = Array.from(testCaseElements).map(el => ({
-            id: parseInt(el.dataset.id),
-            query: el.value.trim()
-          })).filter(tc => tc.query.length > 0);
-
-          if (testCases.length === 0) {
-            alert('Please enter at least one test case.');
+          // Get test cases from train set
+          let trainSet;
+          try {
+            const res = await fetch('/api/splits/train');
+            if (!res.ok) {
+              alert('Train set not found. Please create splits first.');
+              return;
+            }
+            trainSet = await res.json();
+          } catch (error) {
+            console.error('Error loading train set:', error);
+            alert('Failed to load train set. Please create splits first.');
             return;
           }
+
+          if (trainSet.length === 0) {
+            alert('Train set is empty. Please label some traces and create splits first.');
+            return;
+          }
+
+          // Convert train set to test cases format
+          const testCases = trainSet.map((trace, index) => ({
+            id: index + 1,
+            query: trace.query
+          }));
 
           // Get judge prompt
           const judgePrompt = document.getElementById('judge-prompt').value.trim();
@@ -1393,7 +2801,7 @@
 
           // Disable button and show loading
           btn.disabled = true;
-          btn.textContent = 'Running Evaluation...';
+          btn.textContent = 'Running...';
           resultsContainer.classList.remove('visible');
 
           try {
@@ -1421,7 +2829,9 @@
 
             const data = await res.json();
             this.lastResults = data;  // Store results in state
-            this.renderResults(data);
+
+            // Render train set comparison (judge vs human labels)
+            this.renderTrainSetComparison(data.results, trainSet);
             resultsContainer.classList.add('visible');
 
             // Scroll to results
@@ -1432,7 +2842,7 @@
             alert(`Failed to run evaluation: ${error.message}`);
           } finally {
             btn.disabled = false;
-            btn.textContent = 'Run Evaluation';
+            btn.textContent = 'Run on Train Set';
           }
         },
 
@@ -1578,6 +2988,70 @@
 
             tbody.appendChild(row);
           });
+        },
+
+        renderTrainSetComparison(judgeResults, trainSet) {
+          const resultsContainer = document.getElementById('results-container');
+
+          // Create a map of query to train set item for easy lookup
+          const trainMap = new Map();
+          trainSet.forEach(item => {
+            trainMap.set(item.query, item);
+          });
+
+          // Build comparison table HTML
+          let html = `
+            <div class="train-comparison-header">
+              <h3>Train Set: Judge vs Human Labels</h3>
+              <p>Comparing judge predictions against human ground truth labels from the train set.</p>
+            </div>
+            <div class="train-comparison-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Query</th>
+                    <th>Generated Output</th>
+                    <th>Judge Result</th>
+                    <th>Judge Reasoning</th>
+                    <th>Human Label</th>
+                    <th>Human Reasoning</th>
+                  </tr>
+                </thead>
+                <tbody>
+          `;
+
+          judgeResults.forEach((judgeResult, index) => {
+            const trainItem = trainMap.get(judgeResult.query) || {};
+            const humanLabel = trainItem.label || 'N/A';
+            const humanReasoning = trainItem.reasoning || 'N/A';
+
+            // Determine if there's agreement
+            const agreement = judgeResult.result === humanLabel;
+            const rowClass = agreement ? 'agreement' : 'disagreement';
+
+            html += `
+              <tr class="${rowClass}">
+                <td class="query-cell">${this.escapeHtml(judgeResult.query)}</td>
+                <td class="output-cell">${this.escapeHtml(judgeResult.output.substring(0, 150))}${judgeResult.output.length > 150 ? '...' : ''}</td>
+                <td class="result-cell">
+                  <span class="result-badge ${judgeResult.result.toLowerCase()}">${judgeResult.result}</span>
+                </td>
+                <td class="reasoning-cell">${this.escapeHtml(judgeResult.reasoning)}</td>
+                <td class="result-cell">
+                  <span class="result-badge ${humanLabel.toLowerCase()}">${humanLabel}</span>
+                </td>
+                <td class="reasoning-cell">${this.escapeHtml(humanReasoning)}</td>
+              </tr>
+            `;
+          });
+
+          html += `
+                </tbody>
+              </table>
+            </div>
+          `;
+
+          resultsContainer.innerHTML = html;
         }
       };
 

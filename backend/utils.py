@@ -338,4 +338,115 @@ def calculate_judgy_metrics(
         "tpr": tpr,
         "tnr": tnr,
         "using_defaults": True  # Mark that we're using default TPR/TNR
-    } 
+    }
+
+
+def validate_judge_on_dataset(
+    dataset_path: Path,
+    judge_prompt: str
+) -> Dict[str, Any]:
+    """Validate judge against a labeled dataset.
+
+    Parameters
+    ----------
+    dataset_path : Path
+        Path to JSONL file with labeled traces (dev.jsonl or test.jsonl)
+    judge_prompt : str
+        The judge prompt to validate
+
+    Returns
+    -------
+    Dict[str, Any]
+        Validation results including confusion matrix, TPR/TNR, disagreements
+    """
+    import json
+
+    if not dataset_path.exists():
+        return {
+            "error": f"Dataset not found: {dataset_path}",
+            "confusion_matrix": {"TP": 0, "FP": 0, "TN": 0, "FN": 0},
+            "metrics": {},
+            "disagreements": []
+        }
+
+    # Load labeled dataset
+    labeled_traces = []
+    with open(dataset_path, 'r') as f:
+        for line in f:
+            if line.strip():
+                labeled_traces.append(json.loads(line))
+
+    if not labeled_traces:
+        return {
+            "error": "No labeled traces found in dataset",
+            "confusion_matrix": {"TP": 0, "FP": 0, "TN": 0, "FN": 0},
+            "metrics": {},
+            "disagreements": []
+        }
+
+    # Run judge on each trace and compare to ground truth
+    results = []
+    disagreements = []
+
+    for trace in labeled_traces:
+        query = trace.get("query", "")
+        response = trace.get("response", "")
+        ground_truth = trace.get("label", "")
+
+        # Run judge
+        try:
+            judge_result = run_judge_evaluation(query, response, judge_prompt)
+            judge_label = judge_result.get("result", "FAIL")
+            judge_reasoning = judge_result.get("reasoning", "")
+        except Exception as e:
+            logger.error(f"Judge evaluation failed: {e}")
+            judge_label = "FAIL"
+            judge_reasoning = f"Error: {str(e)}"
+
+        results.append({
+            "trace_id": trace.get("trace_id", ""),
+            "query": query,
+            "response": response,
+            "ground_truth": ground_truth,
+            "judge_label": judge_label,
+            "judge_reasoning": judge_reasoning,
+            "human_reasoning": trace.get("reasoning", ""),
+            "confidence": trace.get("confidence", ""),
+            "match": ground_truth == judge_label
+        })
+
+        # Track disagreements
+        if ground_truth != judge_label:
+            disagreements.append(results[-1])
+
+    # Calculate confusion matrix
+    tp = sum(1 for r in results if r["ground_truth"] == "PASS" and r["judge_label"] == "PASS")
+    fp = sum(1 for r in results if r["ground_truth"] == "FAIL" and r["judge_label"] == "PASS")
+    tn = sum(1 for r in results if r["ground_truth"] == "FAIL" and r["judge_label"] == "FAIL")
+    fn = sum(1 for r in results if r["ground_truth"] == "PASS" and r["judge_label"] == "FAIL")
+
+    # Calculate metrics
+    tpr = tp / (tp + fn) if (tp + fn) > 0 else 0
+    tnr = tn / (tn + fp) if (tn + fp) > 0 else 0
+    accuracy = (tp + tn) / len(results) if len(results) > 0 else 0
+    precision = tp / (tp + fp) if (tp + fp) > 0 else 0
+    recall = tpr  # Same as TPR
+
+    return {
+        "total_traces": len(results),
+        "confusion_matrix": {
+            "TP": tp,
+            "FP": fp,
+            "TN": tn,
+            "FN": fn
+        },
+        "metrics": {
+            "accuracy": accuracy,
+            "tpr": tpr,
+            "tnr": tnr,
+            "precision": precision,
+            "recall": recall
+        },
+        "disagreements": disagreements,
+        "all_results": results
+    }
