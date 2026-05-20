@@ -185,3 +185,8 @@ results/*
 
 
 .specstory
+
+annotation/traces/*.json
+data/evals_cache.json
+data/splits_metadata.json
+data/*.jsonl
