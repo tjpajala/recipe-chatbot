@@ -6,13 +6,13 @@ Uses LLM to rewrite natural language queries into more effective search terms
 for BM25 retrieval, focusing on extracting key cooking terms and techniques.
 """
 
-import litellm
 from typing import List, Dict, Any, Optional
 from dotenv import load_dotenv
-import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from tqdm import tqdm
 import time
+
+from backend.llm_backend import LLMBackend
 
 # Load environment variables
 load_dotenv()
@@ -20,10 +20,13 @@ load_dotenv()
 
 class QueryRewriteAgent:
     """LLM-powered agent for optimizing retrieval queries."""
-    
+
     def __init__(self, model: str = "gpt-4.1-nano", max_workers: int = 32):
         self.model = model
         self.max_workers = max_workers
+
+        # Initialize centralized LLM backend
+        self.llm_backend = LLMBackend(default_model=model)
     
     def extract_search_keywords(self, query: str) -> str:
         """
@@ -45,15 +48,13 @@ Query: "{query}"
 
 Important search keywords (space-separated):
 """
-        
+
         try:
-            response = litellm.completion(
-                model=self.model,
-                messages=[{"role": "user", "content": prompt}],
+            keywords = self.llm_backend.complete(
+                prompt=prompt,
                 temperature=0.2,
                 max_tokens=100
             )
-            keywords = response.choices[0].message.content.strip()
             return keywords
         except Exception as e:
             print(f"Error extracting keywords: {e}")
@@ -78,15 +79,13 @@ Original query: "{query}"
 
 Optimized search query:
 """
-        
+
         try:
-            response = litellm.completion(
-                model=self.model,
-                messages=[{"role": "user", "content": prompt}],
+            rewritten = self.llm_backend.complete(
+                prompt=prompt,
                 temperature=0.3,
                 max_tokens=150
             )
-            rewritten = response.choices[0].message.content.strip()
             return rewritten
         except Exception as e:
             print(f"Error rewriting query: {e}")
@@ -111,15 +110,13 @@ Original: "{query}"
 
 Expanded query with synonyms:
 """
-        
+
         try:
-            response = litellm.completion(
-                model=self.model,
-                messages=[{"role": "user", "content": prompt}],
+            expanded = self.llm_backend.complete(
+                prompt=prompt,
                 temperature=0.4,
                 max_tokens=200
             )
-            expanded = response.choices[0].message.content.strip()
             return expanded
         except Exception as e:
             print(f"Error expanding query: {e}")

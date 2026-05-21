@@ -15,8 +15,9 @@ import re
 from pathlib import Path
 from typing import Final, List, Dict, Any, Optional
 
-import litellm  # type: ignore
 from dotenv import load_dotenv
+
+from backend.llm_backend import get_default_backend
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -45,7 +46,7 @@ TRACES_DIR: Final[Path] = _BASE_DIR / "annotation" / "traces"
 # --- Agent wrapper ---------------------------------------------------------------
 
 def get_agent_response(messages: List[Dict[str, str]]) -> List[Dict[str, str]]:  # noqa: WPS231
-    """Call the underlying large-language model via *litellm*.
+    """Call the underlying large-language model via the centralized LLM backend.
 
     Parameters
     ----------
@@ -58,24 +59,16 @@ def get_agent_response(messages: List[Dict[str, str]]) -> List[Dict[str, str]]: 
         The updated conversation history, including the assistant's new reply.
     """
 
-    # litellm is model-agnostic; we only need to supply the model name and key.
-    # The first message is assumed to be the system prompt if not explicitly provided
-    # or if the history is empty. We'll ensure the system prompt is always first.
+    # Ensure the system prompt is always first in the conversation
     current_messages: List[Dict[str, str]]
     if not messages or messages[0]["role"] != "system":
         current_messages = [{"role": "system", "content": SYSTEM_PROMPT}] + messages
     else:
         current_messages = messages
 
-    completion = litellm.completion(
-        model=MODEL_NAME,
-        messages=current_messages, # Pass the full history
-    )
-
-    assistant_reply_content: str = (
-        completion["choices"][0]["message"]["content"]  # type: ignore[index]
-        .strip()
-    )
+    # Get response from centralized backend
+    backend = get_default_backend()
+    assistant_reply_content = backend.chat(messages=current_messages)
 
     # Append assistant's response to the history
     updated_messages = current_messages + [{"role": "assistant", "content": assistant_reply_content}]
@@ -224,18 +217,12 @@ def run_judge_evaluation(query: str, output: str, judge_prompt: str) -> Dict[str
     Dict[str, Any]
         Evaluation result with 'reasoning' and 'result' (PASS/FAIL).
     """
-    evaluation_messages = [
-        {"role": "system", "content": judge_prompt},
-        {"role": "user", "content": f"User Query: {query}\n\nAssistant Response: {output}\n\nEvaluation:"}
-    ]
+    # Get judge backend from centralized LLM backend
+    backend = get_default_backend()
+    judge_backend = backend.create_judge_backend(judge_model=MODEL_NAME_JUDGE)
 
-    completion = litellm.completion(
-        model=MODEL_NAME_JUDGE,
-        messages=evaluation_messages,
-        temperature=0.0  # Use deterministic evaluation
-    )
-
-    judge_response = completion["choices"][0]["message"]["content"].strip()  # type: ignore[index]
+    # Run evaluation
+    judge_response = judge_backend.evaluate(query, output, judge_prompt)
 
     # Extract and parse JSON from response
     try:
