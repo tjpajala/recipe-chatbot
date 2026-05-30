@@ -2,11 +2,35 @@
 
 This guide explains how to configure the Recipe Chatbot to work with different LLM providers.
 
-## Quick Start (No API Key Required)
+## Quick Start (Default: GitHub Copilot)
 
-The chatbot is configured to use **Ollama** by default, which runs models locally on your machine without requiring API keys.
+The chatbot is configured to use **GitHub Copilot** by default. If you prefer to run models locally without API keys, see the Ollama option below.
 
-### 1. Install Ollama
+### 1. Setup Environment
+
+```bash
+cp env.example .env
+# The default configuration uses GitHub Copilot
+```
+
+### 2. Run the Chatbot
+
+```bash
+uv sync
+uv run uvicorn backend.main:app --reload
+```
+
+Visit http://127.0.0.1:8000
+
+---
+
+## Alternative Configurations
+
+### Option 1: Ollama (Local, No API Key)
+
+**Best for**: Local development, no API costs, privacy
+
+1. Install Ollama:
 
 ```bash
 # macOS
@@ -15,7 +39,7 @@ brew install ollama
 # Or download from https://ollama.ai
 ```
 
-### 2. Download a Model
+2. Download a model:
 
 ```bash
 # Small, fast model (2GB) - recommended for testing
@@ -29,29 +53,14 @@ ollama pull qwen2.5:3b
 ollama pull phi3
 ```
 
-### 3. Update .env
-
-The default `.env` is already configured for Ollama:
+3. Update `.env`:
 
 ```bash
 MODEL_NAME=ollama/llama3.2:3b
 MODEL_NAME_JUDGE=ollama/llama3.2:3b
 ```
 
-### 4. Run the Chatbot
-
-```bash
-uv sync
-uv run uvicorn backend.main:app --reload
-```
-
-Visit http://127.0.0.1:8000
-
----
-
-## Alternative Configurations
-
-### Option 1: OpenAI (Requires API Key)
+### Option 2: OpenAI (Requires API Key)
 
 **Best for**: Production use, highest quality responses
 
@@ -63,7 +72,7 @@ MODEL_NAME=openai/gpt-4o-mini
 OPENAI_API_KEY=sk-your-key-here
 ```
 
-### Option 2: Anthropic Claude (Requires API Key)
+### Option 3: Anthropic Claude (Requires API Key)
 
 **Best for**: Long conversations, complex reasoning
 
@@ -75,7 +84,7 @@ MODEL_NAME=anthropic/claude-3-5-sonnet-20241022
 ANTHROPIC_API_KEY=your-key-here
 ```
 
-### Option 3: llama.cpp (Local, No API Key)
+### Option 4: llama.cpp (Local, No API Key)
 
 **Best for**: Maximum control, custom models
 
@@ -92,7 +101,7 @@ MODEL_NAME=openai/local-model
 OPENAI_API_BASE=http://localhost:8080/v1
 ```
 
-### Option 4: Other Ollama Models
+### Option 5: Other Ollama Models
 
 ```bash
 # Fast and multilingual
@@ -111,7 +120,8 @@ MODEL_NAME=ollama/mistral
 
 | Use Case | Model | Size | Speed | Quality |
 |----------|-------|------|-------|---------|
-| **Quick Testing** | `ollama/llama3.2:3b` | 2GB | ⚡⚡⚡ | ⭐⭐ |
+| **Default (Workshop)** | GitHub Copilot (default) | N/A | ⚡⚡⚡ | ⭐⭐⭐⭐ |
+| **Quick Testing (Local)** | `ollama/llama3.2:3b` | 2GB | ⚡⚡⚡ | ⭐⭐ |
 | **Local Development** | `ollama/llama3.2` | 4.7GB | ⚡⚡ | ⭐⭐⭐ |
 | **Production (Cloud)** | `openai/gpt-4o-mini` | N/A | ⚡⚡⚡ | ⭐⭐⭐⭐ |
 | **Best Quality** | `anthropic/claude-3-5-sonnet` | N/A | ⚡⚡ | ⭐⭐⭐⭐⭐ |
@@ -122,8 +132,9 @@ MODEL_NAME=ollama/mistral
 
 ### "AuthenticationError: The api_key client option must be set"
 
-**Solution**: You're using a cloud provider without an API key. Either:
-- Switch to Ollama (no key needed)
+**Solution**: You're trying to use a provider that requires an API key. Either:
+- Use the default GitHub Copilot configuration
+- Switch to Ollama (no key needed) - see Option 1 above
 - Or add the required API key to `.env`
 
 ### Ollama connection errors
@@ -162,8 +173,8 @@ ollama pull llama3.2:3b
 
 | Variable | Description | Example |
 |----------|-------------|---------|
-| `MODEL_NAME` | Model for chat responses | `ollama/llama3.2:3b` |
-| `MODEL_NAME_JUDGE` | Model for evaluations | `ollama/llama3.2:3b` |
+| `MODEL_NAME` | Model for chat responses | GitHub Copilot (default) |
+| `MODEL_NAME_JUDGE` | Model for evaluations | GitHub Copilot (default) |
 | `OPENAI_API_KEY` | OpenAI API key | `sk-...` |
 | `ANTHROPIC_API_KEY` | Anthropic API key | `sk-ant-...` |
 | `OPENAI_API_BASE` | Custom API endpoint | `http://localhost:8080/v1` |
