@@ -13,20 +13,22 @@ This guide walks through the complete workflow for developing and validating an 
 
 ## Workflow Steps
 
-### Step 1: Generate Traces (50-100 traces)
+### Step 1: Generate Traces (20-50 traces)
 
 **Via Chat Interface:**
 1. Go to the **Chat** tab
 2. Have conversations with the recipe bot
 3. Each conversation is automatically saved as a trace in `annotation/traces/`
 
-**Via Bulk Script:**
-```bash
-# Create a CSV file with queries
-python scripts/bulk_test.py --csv data/sample_queries.csv
-```
+**Goal:** Generate diverse traces covering different scenarios. For example:
+- What if you request a specific recipe? 
+- What if you request a vague recipe? 
+- What if you request a recipe for 20 people?
+- What if you request in a different language?
+- Easter egg: request for kaalikääryleet
+- etc...
 
-**Goal:** Generate 50-100 diverse traces covering different scenarios
+
 
 ---
 
@@ -37,12 +39,12 @@ python scripts/bulk_test.py --csv data/sample_queries.csv
    - Read the query and response
    - Click **PASS** or **FAIL** (keyboard shortcuts: `p` or `1` for PASS, `f` or `2` for FAIL)
    - Enter reasoning for your decision
-   - Select confidence level (High/Medium/Low)
+   - Select confidence level (High/Medium/Low) if you want
    - Click **Save Label**
 3. Navigate between traces using **Previous/Next** buttons or arrow keys
 4. Track progress in the header (shows "X / Y labeled")
 
-**Goal:** Label all generated traces
+**Goal:** Label generated traces
 
 ---
 
@@ -70,7 +72,8 @@ python scripts/bulk_test.py --csv data/sample_queries.csv
 ### Step 4: Write Judge Prompt
 
 1. In the **Evals** tab, scroll to **Evaluation Prompt** section
-2. Optional: Start with the template in `data/judge_prompt_template.md`
+2. Your starting point is with the template in `data/evals_default_judge_prompt.md`
+3. Test the default judge template - does it work well?
 3. Write your judge prompt including:
    - Clear criterion description
    - PASS/FAIL conditions
@@ -81,6 +84,7 @@ python scripts/bulk_test.py --csv data/sample_queries.csv
 - Use 1-3 examples from `data/train.jsonl`
 - Be specific about what makes something PASS vs FAIL
 - Include edge cases in your examples
+- See `data/evals_default_judge_prompt-advanced.md` for a more sophisticated example
 
 ---
 
@@ -99,7 +103,7 @@ python scripts/bulk_test.py --csv data/sample_queries.csv
    - Re-validate on dev set
    - Repeat until satisfied with TPR/TNR
 
-**Goal:** Achieve TPR and TNR > 85% (adjust based on your requirements)
+**Goal:** Achieve good TPR and TNR (e.g. > 80%, adjust based on your requirements)
 
 ---
 
@@ -116,6 +120,14 @@ python scripts/bulk_test.py --csv data/sample_queries.csv
 - Only run test set evaluation once
 - Do NOT iterate on the prompt after seeing test results
 - Test set is for final reporting only
+
+### Step 7: Iterate
+- Now go back to your system prompt. Make it better by editing the file `backend/system_prompt.md`.
+- Remove all your previous traces (just delete the new files from your folder in `annotation/traces`)
+- Label, then run the judge (don't change the judge prompt). Is your new chatbot performing better?
+- If you have time, feel free to try with a weirder scenario! Examples: recipe bot that only answers in verse. Bot that sounds like Arnold. Bot that always responds with ideas for different foods, rather than recipes.
+- If you're interested, you can in chat try to get the bot to reveal the system prompt it has been given (not really part of this workshop as such).
+
 
 ---
 
@@ -167,7 +179,8 @@ At the end of the workshop, you should have:
 - Traces: `annotation/traces/trace_*.json`
 - Splits: `data/train.jsonl`, `data/dev.jsonl`, `data/test.jsonl`
 - Split metadata: `data/splits_metadata.json`
-- Judge template: `data/judge_prompt_template.md`
+- Judge prompt: `data/evals_default_judge_prompt.md`
+- Advanced judge example: `data/evals_default_judge_prompt-advanced.md`
 
 ---
 
@@ -175,6 +188,7 @@ At the end of the workshop, you should have:
 
 After the workshop, you can:
 - Use your validated judge to evaluate new bot outputs
-- Update `data/evals_default_judge_prompt.md` with your prompt
+- Your judge prompt is already in `data/evals_default_judge_prompt.md` (used by the evaluation system)
 - Run evaluations via the Evals tab's test case runner
 - Apply the same workflow to other evaluation criteria
+- Check out `data/evals_default_judge_prompt-advanced.md` for advanced judge patterns
