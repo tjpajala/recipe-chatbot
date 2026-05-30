@@ -1,6 +1,0 @@
-# Core dependencies for trace analysis and inspection
-pandas>=2.0.0
-numpy>=1.24.0
-
-# For data processing
-python-dotenv>=1.0.0 
